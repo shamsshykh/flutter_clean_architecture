@@ -1,12 +1,19 @@
 part of 'user_bloc.dart';
 
-abstract class UserState extends Equatable { @override List<Object?> get props => []; }
+abstract class UserState extends Equatable {
+  @override List<Object?> get props => [];
+}
 
 
+// Initial State
 class UserInitial extends UserState {}
 
-class UserLoading extends UserState {}
+// Separate Loading States for Each API
+class UserLoading extends UserState {} // For fetching user
+class CommentsLoading extends UserState {} // For fetching comments
+class PostUserLoading extends UserState {} // For posting user info
 
+// Generic Error State
 class UserError extends UserState {
   final String message;
 
@@ -16,6 +23,8 @@ class UserError extends UserState {
   List<Object?> get props => [message];
 }
 
+
+// Success States
 class UserLoaded extends UserState {
   final UserModel user;
 
