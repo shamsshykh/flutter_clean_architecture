@@ -1,6 +1,4 @@
-import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_clean_architecture/core/error/failures.dart';
 import '../../features/data/model/user_info.dart';
 
 class ApiService {

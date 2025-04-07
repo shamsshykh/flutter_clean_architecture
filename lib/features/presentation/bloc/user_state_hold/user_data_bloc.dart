@@ -45,8 +45,8 @@ class UserDataBloc extends Bloc<UserDataEvent, UserDataState> {
       try {
         final result = await _postUserDetail.call(event.userInfo);
         result.fold(
-              (failure) => emit(Error(failure.message, user: state.user, users: state.users, userInfo: state.userInfo)),
-              (userInfo) => emit(UserDataUpdated(user: state.user, users: state.users, userInfo: userInfo)),
+           (failure) => emit(Error(failure.message, user: state.user, users: state.users, userInfo: state.userInfo)),
+           (userInfo) => emit(UserDataUpdated(user: state.user, users: state.users, userInfo: userInfo)),
         );
       } catch (e) {
         emit(Error(e.toString(), user: state.user, users: state.users, userInfo: state.userInfo));

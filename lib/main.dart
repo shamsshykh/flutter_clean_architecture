@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
-        BlocProvider(create: (_) => sl<UserBloc>()),
+        BlocProvider(create: (_) => sl<UserBloc>()..add(FetchCurrentUser())),
         BlocProvider(create: (_) => sl<UserDataBloc>())
       ],
       child: MaterialApp(
@@ -136,7 +136,7 @@ class ComplexUserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Complex User Screen')),
+      appBar: AppBar(title: Text('User Screen')),
 
       body: BlocListener<UserDataBloc, UserDataState>(
         listener: (context, state) {
@@ -148,7 +148,7 @@ class ComplexUserScreen extends StatelessWidget {
         },
         child: Column(
           children: [
-            // 🔹 Fetch User Section
+            // Fetch User Section
             BlocSelector<UserDataBloc, UserDataState, ({UserModel? user, bool isLoading})>(
               selector: (state) => (user : state.user, isLoading: state.isLoading),
               builder: (context, data) {
@@ -166,7 +166,7 @@ class ComplexUserScreen extends StatelessWidget {
 
             SizedBox(height: 20),
 
-            // 🔹 Fetch Comments Section
+            // Fetch Comments Section
             BlocSelector<UserDataBloc, UserDataState, List<ListOfUsers>?>(
               selector: (state) => state.users,
               builder: (context, users) {
@@ -188,7 +188,7 @@ class ComplexUserScreen extends StatelessWidget {
 
             SizedBox(height: 20),
 
-            // 🔹 Post User Info Section
+            // Post User Info Section
             BlocSelector<UserDataBloc, UserDataState, UserInfo?>(
               selector: (state) => state.userInfo,
               builder: (context, userInfo) {
