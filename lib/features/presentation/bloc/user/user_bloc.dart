@@ -61,8 +61,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     final result = await _postUserDetail.call(event.userInfo);
     result.fold(
-          (failure) => emit(UserError(failure.message)),
-          (user) => emit(PostUserInfoSuccess(user)),
+      (failure) => emit(UserError(failure.message)),
+      (user) => emit(PostUserInfoSuccess(user)),
     );
   }
 

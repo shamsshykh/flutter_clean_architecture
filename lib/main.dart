@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_clean_architecture/core/progress/app_loading.dart';
 import 'package:flutter_clean_architecture/core/utils/extension.dart';
 import 'package:flutter_clean_architecture/features/data/model/user_info.dart';
 import 'package:flutter_clean_architecture/features/presentation/bloc/user_state_hold/user_data_bloc.dart';
@@ -21,9 +22,10 @@ class MyApp extends StatelessWidget {
     return MultiBlocListener(
       listeners: [
         BlocProvider(create: (_) => sl<UserBloc>()..add(FetchCurrentUser())),
-        BlocProvider(create: (_) => sl<UserDataBloc>())
+        BlocProvider(create: (_) => sl<UserDataBloc>()),
       ],
       child: MaterialApp(
+        navigatorKey: AppLoading.navigatorKey,
         title: 'Flutter Demo',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -129,7 +131,6 @@ class UserScreen extends StatelessWidget {
   }
 }
 
-
 class ComplexUserScreen extends StatelessWidget {
   const ComplexUserScreen({super.key});
 
@@ -142,25 +143,34 @@ class ComplexUserScreen extends StatelessWidget {
         listener: (context, state) {
           if (state.errorMessage != null) {
             context.showErrorSnackBar(state.errorMessage!);
-          }else if (state is UserError) {
+          } else if (state is UserError) {
             context.showErrorSnackBar(state.errorMessage!);
           }
         },
         child: Column(
           children: [
             // Fetch User Section
-            BlocSelector<UserDataBloc, UserDataState, ({UserModel? user, bool isLoading})>(
-              selector: (state) => (user : state.user, isLoading: state.isLoading),
+            BlocSelector<
+              UserDataBloc,
+              UserDataState,
+              ({UserModel? user, bool isLoading})
+            >(
+              selector:
+                  (state) => (user: state.user, isLoading: state.isLoading),
               builder: (context, data) {
                 if (data.isLoading && data.user == null) {
                   return Center(child: CircularProgressIndicator());
                 }
                 return data.user != null
-                    ? ListTile(title: Text(data.user!.name), subtitle: Text(data.user!.email!))
+                    ? ListTile(
+                      title: Text(data.user!.name),
+                      subtitle: Text(data.user!.email!),
+                    )
                     : ElevatedButton(
-                  onPressed: () => context.read<UserDataBloc>().add(FetchUser()),
-                  child: Text('Fetch User'),
-                );
+                      onPressed:
+                          () => context.read<UserDataBloc>().add(FetchUser()),
+                      child: Text('Fetch User'),
+                    );
               },
             ),
 
@@ -172,17 +182,19 @@ class ComplexUserScreen extends StatelessWidget {
               builder: (context, users) {
                 return users != null
                     ? Expanded(
-                  child: ListView.builder(
-                    itemCount: users.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(title: Text(users[index].name!));
-                    },
-                  ),
-                )
+                      child: ListView.builder(
+                        itemCount: users.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(title: Text(users[index].name!));
+                        },
+                      ),
+                    )
                     : ElevatedButton(
-                  onPressed: () => context.read<UserDataBloc>().add(FetchComments()),
-                  child: Text('Fetch Comments'),
-                );
+                      onPressed:
+                          () =>
+                              context.read<UserDataBloc>().add(FetchComments()),
+                      child: Text('Fetch Comments'),
+                    );
               },
             ),
 
@@ -195,13 +207,30 @@ class ComplexUserScreen extends StatelessWidget {
                 return userInfo != null
                     ? Text('User Info Posted: ${userInfo.userId}')
                     : ElevatedButton(
-                  onPressed: () {
-                    final userInfo = UserInfo(id: 12, title: "title", body: "body", userId: 121);
-                    context.read<UserDataBloc>().add(PostInfo(userInfo));
-                  },
-                  child: Text('Post User Info'),
-                );
+                      onPressed: () {
+                        final userInfo = UserInfo(
+                          id: 12,
+                          title: "title",
+                          body: "body",
+                          userId: 121,
+                        );
+                        context.read<UserDataBloc>().add(PostInfo(userInfo));
+                      },
+                      child: Text('Post User Info'),
+                    );
               },
+            ),
+            SizedBox(height: 20),
+
+            ElevatedButton(
+              onPressed: () {
+                AppLoading.show(); // Show loading dialog
+                // Simulate some delay or network request
+                Future.delayed(const Duration(seconds: 3), () {
+                  AppLoading.hide(); // Hide loading dialog after the delay
+                });
+              },
+              child: Text("Show Loading"),
             ),
           ],
         ),
@@ -209,4 +238,3 @@ class ComplexUserScreen extends StatelessWidget {
     );
   }
 }
-
