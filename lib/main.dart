@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_clean_architecture/config/navigation/routes.dart';
 import 'package:flutter_clean_architecture/core/progress/app_loading.dart';
 import 'package:flutter_clean_architecture/core/utils/extension.dart';
 import 'package:flutter_clean_architecture/features/data/model/user_info.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => sl<UserDataBloc>()),
       ],
       child: MaterialApp(
-        navigatorKey: AppLoading.navigatorKey,
+        navigatorKey: Routes.navigatorKey,
         title: 'Flutter Demo',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

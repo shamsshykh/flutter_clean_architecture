@@ -1,15 +1,16 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_clean_architecture/core/error/failures.dart';
+import 'package:flutter_clean_architecture/core/network/api_data_source.dart';
+import 'package:flutter_clean_architecture/core/network/api_data_source_impl.dart';
 import 'package:flutter_clean_architecture/core/network/safe_api_call.dart';
 import 'package:flutter_clean_architecture/features/data/model/user_info.dart';
 
-import '../../../core/network/api_service.dart';
 import '../../domain/repository/user_repository.dart';
 import '../model/list_of_users.dart';
 import '../model/user_model.dart';
 
 class UserRepositoryImpl implements UserRepository {
-  final ApiService _apiService;
+  final ApiDataSource _apiService;
   UserRepositoryImpl(this._apiService);
 
   @override

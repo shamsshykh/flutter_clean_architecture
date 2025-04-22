@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
+import '../../config/navigation/routes.dart';
+
 class AppLoading {
   AppLoading._(); // Private constructor for singleton
 
@@ -10,8 +12,7 @@ class AppLoading {
     return _instance;
   }
 
-  static final GlobalKey<NavigatorState> navigatorKey =
-      GlobalKey<NavigatorState>();
+  static final GlobalKey<NavigatorState> navigatorKey = Routes.navigatorKey;
 
   static bool _isDialogOpen = false;
 
